@@ -2,9 +2,9 @@ import kotlin.math.abs
 
 fun main() {
     fun part1(input: List<String>): Int {
-        var l1: MutableList<Int> = mutableListOf()
-        var l2: MutableList<Int> = mutableListOf()
-        var diff: MutableList<Int> = mutableListOf()
+        val l1: MutableList<Int> = mutableListOf()
+        val l2: MutableList<Int> = mutableListOf()
+        val diff: MutableList<Int> = mutableListOf()
         input.forEach { item ->
             val (i1, i2) = item.split("   ").map{ it.toInt() }
             l1.add(i1)
@@ -18,8 +18,8 @@ fun main() {
     }
 
     fun part2(input: List<String>): Int {
-        var l1: MutableList<Int> = mutableListOf()
-        var m2: MutableMap<Int, Int> = mutableMapOf()
+        val l1: MutableList<Int> = mutableListOf()
+        val m2: MutableMap<Int, Int> = mutableMapOf()
         input.forEach { item ->
             val (i1, i2) = item.split("   ").map{ it.toInt() }
             l1.add(i1)
