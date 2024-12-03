@@ -53,7 +53,7 @@ fun main() {
     }
     val input = readInput("Day02")
 
-    assert(isReportSafe(mutableListOf(1,2,7,8,9)) == 1)
+    check(isReportSafe(mutableListOf(1,2,7,8,9)) == 1)
     part1(input).println()
     part2(input).println()
 }
