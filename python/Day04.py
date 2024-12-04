@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import List
 
 def read_input(name:str) -> List[str]:
-    return Path(f'src/{name}.txt').open().read().split('\n')
+    return Path(f'data/{name}.txt').open().read().split('\n')
 
 
 def part1(g:List[str]) -> int:
