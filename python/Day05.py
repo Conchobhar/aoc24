@@ -5,6 +5,22 @@ day = Path(__file__).stem
 
 
 def read_input(name:str) -> Tuple[dict[str, Set], List[List[str]]]:
+    """Data is of form:
+    ```    
+    47|53
+    97|13
+    ...
+
+    75,97,47,61,53
+    61,13,29
+    ...
+    ```
+
+    Turn first block from X|Y into map of X:[Y1,Y2, ...]. This is the rules map - values of 
+    a given key are not allowed to be before it in a report.
+
+    Second are rows of reports.
+    """
     d1, d2 = Path(f'data/{name}.txt').open().read().split('\n\n')
     rules_raw, reports = d1.split('\n'), [x.split(',') for x in d2.split('\n')]
     rules_map = {}
@@ -15,10 +31,11 @@ def read_input(name:str) -> Tuple[dict[str, Set], List[List[str]]]:
 
 
 def is_valid_report(rules:Dict, report:str) -> bool:
+    """Check if a report is valid with respect to the ordering rules."""
     for i, v in enumerate(report):
         if v in rules:
-            pre_v = set(report[:i])
-            if pre_v.intersection(rules[v]):
+            pre_v = set(report[:i])  # get all values before v
+            if pre_v.intersection(rules[v]):  # check if any values are not allowed before v
                 return False
         else:
             pass
@@ -26,6 +43,7 @@ def is_valid_report(rules:Dict, report:str) -> bool:
 
 
 def part1(rules:Dict, reports:List[List[str]]) -> int:
+    """Count middle index of only valid reports"""
     c = 0
     for report in reports:
         if is_valid_report(rules, report):
@@ -34,6 +52,7 @@ def part1(rules:Dict, reports:List[List[str]]) -> int:
 
 
 def fix_report(rules:Dict, report: List[str]) -> List[str]:
+    """Fix a report to obey the rules."""
     m = {}
     for v in report:
         if v in rules:
@@ -45,6 +64,7 @@ def fix_report(rules:Dict, report: List[str]) -> List[str]:
 
 
 def part2(rules:Dict, reports:List[str]) -> int:
+    """Count middle index of only invalid reports after fixing"""
     c = 0
     for report in reports:
         if not is_valid_report(rules, report):
