@@ -1,11 +1,22 @@
 from pathlib import Path
-from typing import List
+from typing import *
+from typing import Any
+from tqdm import tqdm
+import bisect
 
+data_path = Path(__file__).absolute().parents[1] / 'data'
 day = Path(__file__).stem
+
+DEBUG = False
+
+
+def debug(s:str):
+    if DEBUG:
+        print(s)
 
 
 def read_input(name:str) -> List[str]:
-    return Path(f'data/{name}.txt').open().read().split('\n')
+    return (data_path / f'{name}.txt').open().read().split('\n')
 
 
 def part1(g:List[str]) -> int:
