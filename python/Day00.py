@@ -1,6 +1,12 @@
 from pathlib import Path
 from typing import *
 from typing import Any
+from collections import defaultdict
+from itertools import product, permutations, combinations
+# product gets every pairing
+#   permutations excludes (self, self)
+#   combinations excludes ordering
+
 from tqdm import tqdm
 import bisect
 
@@ -16,7 +22,7 @@ def debug(s:str):
 
 
 def read_input(name:str) -> List[str]:
-    return (data_path / f'{name}.txt').open().read().split('\n')
+    return (data_path / f'{name}.txt').open().read().strip().split('\n')
 
 
 def part1(g:List[str]) -> int:
