@@ -71,25 +71,25 @@ def part1(s:str) -> int:
 
 
 def part2(s:str) -> int:
-    l = []
+    l = []  # tuples of (file start idx, file length, file id)
     # startidx2length
     files = []
     spaces = []
     idc = 0
     for i, c in enumerate(s):
         if i % 2 == 0:
-            files += [(len(l), int(c))]
+            files += [(len(l), int(c), idc)]
             l += [idc]*int(c)
             idc += 1
         else:
             spaces += [(len(l), int(c))]
             l += ['.']*int(c)
 
-    for ef, (fix, flen) in enumerate(reversed(files)):
-        # print(f"{l[fix]}: {fix=}, {flen=}")
+    for ef, (fix, flen, fid) in enumerate(reversed(files)):
         for es, (six, slen) in enumerate(spaces):
             print(f"{ef/len(files):.2%}\r", flush=True, end='')
-            # print(f"{six=}, {slen=}")
+            if six > fix:
+                break
             if flen <= slen:
                 l[six:six+flen] = [l[fix]]*flen
                 l[fix:fix+flen] = ['.']*flen
@@ -108,14 +108,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.debug:
         DEBUG = True
-        # with open('day09.out', 'r') as f:
-        #     d = f.read()
-        #     print(checksum(d))
-        # exit(0)
-
 
     input_test = read_input(f'{day}_test')
-    # assert part1(input_test) == 1928
-    # print(part1(read_input(day)))
+    assert part1(input_test) == 1928
+    print(part1(read_input(day)))
     assert part2(input_test) == 2858
-    # print(part2(read_input(day)))  # 8592266602739 too high
+    print(part2(read_input(day)))  # 6363268339304
