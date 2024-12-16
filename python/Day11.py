@@ -1,4 +1,5 @@
-from functools import cache
+import argparse
+from functools import cache, lru_cache
 from pathlib import Path
 from typing import *
 from typing import Any
@@ -30,23 +31,46 @@ def read_input(name:str) -> List[str]:
 
 
 @cache
-def blink(s:str) -> List[str]:
-    """
-    if 0 -> 1
-    elif even digits -> (left, right) split, drop leading zeros
-    else x *2024
-    """
+def blink(s:str) -> Tuple[str]:
+    """Go from one stone to a tuple of one or two stones"""
     if s == '0':
-        return ['1']
+        return ('1',)
     elif len(s) % 2 == 0:
-        return [s[:len(s)//2], str(int(s[len(s)//2:]))]
+        return (s[:len(s)//2], str(int(s[len(s)//2:])),)
     else:
-        return [str(int(s) * 2024)]
+        return (str(int(s) * 2024),)
+    
+
+def blinkn(t:Tuple[str], n) -> Tuple[str]:
+    """Maintain collection of stones.
+    This requires too much memory for part2.
+    """
+    mid = len(t) // 2
+    if mid > 0:
+        return blinkn(t[0:mid], n) + blinkn(t[mid:],n)
+    else:
+        while len(t) == 1 and n > 0:
+            debug(f"{t=} {n=}")
+            s = t[0]
+            t = blink(s)
+            n -= 1    
+        if n > 0:
+            t = blinkn(t, n)
+        return t
 
 
-def part1(stones:List[str], blinks) -> int:
-    for ib in range(blinks):
-        prog_print(f"{ib=}/{blinks} {len(stones)=}")
+@cache
+def count_stones_after_blinks(s:str, n) -> int:
+    """Only keep track of total count of stones after n blinks."""
+    if n == 0:
+        return 1
+    stones = blink(s)
+    return sum(count_stones_after_blinks(s, n-1) for s in stones)
+
+
+def part1(stones:List[str]) -> int:
+    for ib in range(25):
+        # prog_print(f"{ib=}/{25} {len(stones)=}")
         post_stones = []
         debug(f'blink {ib} stones {stones}')
         for i, s in enumerate(stones):
@@ -56,28 +80,25 @@ def part1(stones:List[str], blinks) -> int:
     return len(stones)
 
 
-@cache
-def blinkl(t:Tuple[str]) -> Tuple[str]:
-    mid = len(t) // 2
-    if mid > 0:
-        return blinkl(t[0:mid]) + blinkl(t[mid:])
-    else:
-        return tuple(blink(t[0]))
-
-
-def part2(stones:List[str], blinks=75) -> int:
+def part2(stones:List[str]) -> int:
     stones = tuple(stones)
-    for ib in range(blinks):
-        prog_print(f"{ib=}/{blinks} {len(stones)=}")
-        debug(f'blink {ib} stones {stones}')
-        stones = blinkl(stones)
-    return len(stones)
+    c=0
+    for stone in stones:
+        c += count_stones_after_blinks(stone, 75)
+    return c
 
 
 if __name__ == '__main__':
-    DEBUG = False
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-d', '--debug', action='store_true', help='Enable debug output')
+    args = parser.parse_args()
+    DEBUG = args.debug
+
     input_test = read_input(f'{day}_test')
-    assert part1(input_test, 25) == 55312
+    # assert blinkn(('253', '0', '2024', '14168',) , 1) == ('512072', '1', '20', '24', '28676032')
+    assert blinkn(('253000', '1', '7',),  2) == ('512072', '1', '20', '24', '28676032')
+    assert blinkn(('125','17',) , 3) == ('512072', '1', '20', '24', '28676032')
+    assert blinkn(tuple(input_test), 3) == ('512072', '1', '20', '24', '28676032')
+    assert len(blinkn(tuple(input_test), 25)) == 55312
     print(part1(read_input(day), 25))
-    # assert part2(input_test) == ...
     print(part2(read_input(day)))

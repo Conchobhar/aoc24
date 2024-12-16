@@ -1,3 +1,4 @@
+import argparse
 from pathlib import Path
 from typing import *
 from typing import Any
@@ -6,25 +7,17 @@ from itertools import product, permutations, combinations
 # product gets every pairing
 #   permutations excludes (self, self)
 #   combinations excludes ordering
-
 from tqdm import tqdm
 import bisect
 
-data_path = Path(__file__).absolute().parents[1] / 'data'
+import aoc
+
+
 day = Path(__file__).stem
 
 
-def prog_print(s:str):
-    print(f"{s}", end='\r', flush=True)
-
-
-def debug(s:str):
-    if DEBUG:
-        print(s)
-
-
 def read_input(name:str) -> List[str]:
-    return (data_path / f'{name}.txt').open().read().strip().split('\n')
+    return (aoc.data_path / f'{name}.txt').open().read().strip().split('\n')
 
 
 def part1(input) -> int:
@@ -36,7 +29,12 @@ def part2(input) -> int:
 
 
 if __name__ == '__main__':
-    DEBUG = False
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-d', '--debug', action='store_true', help='Enable debug output')
+    args = parser.parse_args()
+    if args.debug:
+        aoc.Debug.set = True
+        
     input_test = read_input(f'{day}_test')
     assert part1(input_test) == ...
     print(part1(read_input(day)))
