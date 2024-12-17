@@ -2,7 +2,10 @@
 .idea
 .kotlin/
 build
+__pycache__/
 data/
 local.properties
 .vscode
 scratch.md
+outs/
+dev.ipynb
