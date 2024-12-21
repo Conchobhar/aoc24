@@ -62,6 +62,9 @@ class P:
     def __eq__(self, other):
         return (self.x, self.y) == (other.x, other.y)
     
+    def dist(self, other):
+        return (self.x-other.x)**2 + (self.y-other.y)**2
+    
     @property
     def adjacent(self) -> Set['P']:
         """Get all 4 adjacent (but not necessarily in bounds) points to this one."""
@@ -75,3 +78,32 @@ class P:
     
 
 deltas = [P(0, 1), P(1, 0), P(0, -1), P(-1, 0)]
+
+
+class Grid:
+
+    def __init__(self, g:List[List[str]]) -> None:
+        self.g = g
+        self.limy, self.limx = len(g), len(g[0])
+
+    def __getitem__(self, p:P) -> str:
+        return self.g[p.y][p.x]
+    
+    def __setitem__(self, p:P, v:str) -> None:
+        self.g[p.y][p.x] = v
+
+    def __str__(self) -> str:
+        return f'Grid(limx={self.limx}, limy={self.limy})'
+    
+    def valid_points(self):
+        """Generate all valid points in the grid."""
+        if self.limx is None or self.limy is None:
+            raise ValueError("Need to set class attribs limx and limy.")
+        for x in range(self.limx):
+            for y in range(self.limy):
+                yield P(x, y)
+    
+    def print(self):
+        for row in self.g:
+            print(''.join(row))
+    

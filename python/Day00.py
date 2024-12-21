@@ -16,7 +16,7 @@ import aoc
 day = Path(__file__).stem
 
 
-def read_input(name:str) -> List[str]:
+def read_input(name:str):
     return (aoc.data_path / f'{name}.txt').open().read().strip().split('\n')
 
 
