@@ -2,7 +2,7 @@
 
 Advent of Code[^aoc] 2024. Day 1-3 in Kotlin, >3 in python.
 
-[tree.png]
+![tree](tree.png "Tree")
 
 
 
