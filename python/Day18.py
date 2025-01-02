@@ -48,17 +48,19 @@ class NPGrid:
         return 0 <= p.x < self.xlim and 0 <= p.y < self.ylim
 
     def get_shortest_path(self, start=None, end=None):
-        """Djikstras - follow all possible paths, priority queue exploring the shortest first so we ultimately
-        find the shortest path.
+        """Djikstras - follow all possible paths, priority queue exploring the path with minimised priority score
+        which is steps taken + manhattan distance to end point. If a path takes a step but is also 1 closer to
+        the end, it maintains its priority. This means we can  find the shortest path but not spend time exploring every
+        path.
         """
         start = P(0, 0) if start is None else start
         end = P(self.xlim-1, self.ylim-1) if end is None else end
-        # q is (steps-npdist, dist, pos, steps,)
+        # q is (priority=steps-npdist, dist, pos, steps,)
         dist = start.dist(end)
-        q = [(steps-dist,0, start, dist,)]
+        q = [(0-dist,0, start, dist,)]
         visited = set()
         while q:
-            steps, pos, dist = heapq.heappop(q)
+            priority, steps, pos, dist = heapq.heappop(q)
             if pos == end:
                 return steps
             if pos in visited:
@@ -115,7 +117,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.debug:
         aoc.Debug.set = True
-        
+
     input_test = read_input(f'{day}_test')
     assert part1(NPGrid(input_test, 7, 7), nblocks=12) == 22
     print(part1(NPGrid(read_input(f'{day}'), 71, 71), nblocks=1024))  # 226
