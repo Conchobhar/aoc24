@@ -48,13 +48,14 @@ class NPGrid:
         return 0 <= p.x < self.xlim and 0 <= p.y < self.ylim
 
     def get_shortest_path(self, start=None, end=None):
-        """Djikstras - follow all possible paths, exploring the shortest first so we ultimately
+        """Djikstras - follow all possible paths, priority queue exploring the shortest first so we ultimately
         find the shortest path.
         """
         start = P(0, 0) if start is None else start
         end = P(self.xlim-1, self.ylim-1) if end is None else end
-        # q is (dist, pos, steps,)
-        q = [(0, start, start.dist(end),)]
+        # q is (steps-npdist, dist, pos, steps,)
+        dist = start.dist(end)
+        q = [(steps-dist,0, start, dist,)]
         visited = set()
         while q:
             steps, pos, dist = heapq.heappop(q)
@@ -66,7 +67,8 @@ class NPGrid:
             for d in deltas:
                 np = pos + d
                 if self.in_bounds(np) and self[np] == 0:
-                    heapq.heappush(q, (steps+1, np, np.dist(end)))
+                    npdist = np.dist(end)
+                    heapq.heappush(q, (steps-npdist,steps+1, np, npdist))
         return -1
 
     def set_blocks(self, n:int):
