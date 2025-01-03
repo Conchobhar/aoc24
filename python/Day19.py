@@ -84,13 +84,20 @@ class Trie:
             self.add_word(word)
 
     def add_word(self, word:str):
+        """Nodes are added with full prefixes where as a standard Trie would imply the full
+        prefix from the traversal
+        
+        a -> ab -> abc
+        vs
+        a -> b -> c
+        """
         node = self.root
         for idx in range(0, len(word)):
             new_node = node.add_node(word[0:idx+1])
             node = new_node
         node.is_rule = True
     
-    def match(self, word:str):
+    def get_matches(self, word:str):
         node = self.root
         m = []
         for idx in range(len(word)):
@@ -105,7 +112,7 @@ class Trie:
 
 @cache
 def count_possible(s:str) -> int:
-    return sum([count_possible(s.removeprefix(m)) for m in trie.match(s)]) if s else 1
+    return sum([count_possible(s.removeprefix(m)) for m in trie.get_matches(s)]) if s else 1
 
 
 def part2(rules:Trie, designs) -> int:
@@ -123,8 +130,8 @@ if __name__ == '__main__':
     
     rules_test, designs_test = read_input(f'{day}_test')
     assert part1(rules_test, designs_test) == 6
-    print(part1(*read_input(day)))
-    
+    print(part1(*read_input(day)))  # 263
+
     global trie
     assert part2(Trie(rules_test), designs_test) == 16
     rules, designs = read_input(day)
