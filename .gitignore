@@ -4,6 +4,7 @@
 build
 __pycache__/
 data/
+25/data/
 local.properties
 .vscode
 scratch.md
