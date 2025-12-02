@@ -1,3 +1,4 @@
+import argparse
 import heapq
 from pathlib import Path
 from typing import List, Set, Tuple, Any
@@ -6,11 +7,18 @@ import numpy as np
 
 data_path = Path(__file__).absolute().parents[0] / 'data'
 
+parser = argparse.ArgumentParser()
+parser.add_argument('-d', '--debug', action='store_true', help='Enable debug output')
+args = parser.parse_args()
+
 
 class Debug:
     """Debug"""
     set = False
 
+
+if args.debug:
+    Debug.set = True
 
 def prog_print(s:str):
     print(f"{s}", end='\r', flush=True)
