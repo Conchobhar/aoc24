@@ -21,7 +21,6 @@ def read_input(name:str):
 def part1(data) -> int:
     batts = []
     for bank in data:
-        # bank = '5222232532'
         bb, bs = bank[-2], bank[-1]
         bsc = '1'
         for v in reversed(bank[:-2]):

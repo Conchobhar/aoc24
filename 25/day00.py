@@ -28,7 +28,7 @@ def part2(data) -> int:
 
 if __name__ == '__main__': 
     data_test = read_input(f'{day}_test')
-    assert part1(data_test) == ...
+    assert part1(data_test) == ..., part1(data_test)
     print(part1(read_input(day)))
-    assert part2(data_test) == ...
+    assert part2(data_test) == ..., part2(data_test)
     print(part2(read_input(day)))

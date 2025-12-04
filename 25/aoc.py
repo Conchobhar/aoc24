@@ -83,18 +83,24 @@ class P:
         return abs(self.x-other.x) + abs(self.y-other.y)
     
     @property
-    def adjacent(self) -> Set['P']:
+    def adjacent_4(self) -> Set['P']:
         """Get all 4 adjacent (but not necessarily in bounds) points to this one."""
-        return set(self + d for d in deltas)
+        return set(self + d for d in deltas_4)    
+    
+    @property
+    def adjacent_8(self) -> Set['P']:
+        """Get all 4 adjacent (but not necessarily in bounds) points to this one."""
+        return set(self + d for d in deltas_8)
 
     @property
     def in_bounds(self) -> bool:
         if self.limx is None or self.limy is None:
             raise ValueError("Need to set class attribs limx and limy.")
         return (0 <= self.x < self.limx) and (0 <= self.y < self.limy)
-    
 
-deltas = [P(0, 1), P(1, 0), P(0, -1), P(-1, 0)]
+
+deltas_4 = [P(0, 1), P(1, 0), P(0, -1), P(-1, 0)]
+deltas_8 = [P(0, 1), P(1, 0), P(0, -1), P(-1, 0), P(1, 1), P(1, -1), P(-1, 1), P(-1, -1)]
 
 
 class Grid:
@@ -103,9 +109,16 @@ class Grid:
     def __init__(self, g:List[List[Any]]) -> None:
         self.g = g
         self.limy, self.limx = len(g), len(g[0])
+        P.limx = self.limx
+        P.limy = self.limy
 
     def __getitem__(self, p:P) -> Any:
         return self.g[p.y][p.x]
+    
+    def get_oob(self, p:P) -> Any:
+        if p.in_bounds:
+            return self[p]
+        return None
     
     def __setitem__(self, p:P, v:Any) -> None:
         self.g[p.y][p.x] = v
@@ -169,8 +182,8 @@ class NPGrid:
                 continue
             visited.add(pos)
             for d in deltas:
-                np = pos + d
-                if self.in_bounds(np) and self[np] == 0:
-                    npdist = np.dist(end)
-                    heapq.heappush(q, (steps-npdist,steps+1, np, npdist))
+                npos = pos + d
+                if self.in_bounds(npos) and self[npos] == 0:
+                    npdist = npos.dist(end)
+                    heapq.heappush(q, (steps-npdist,steps+1, npos, npdist))
         return -1
