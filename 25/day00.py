@@ -14,21 +14,32 @@ import aoc
 day = Path(__file__).stem
 
 
-def read_input(name:str):
+def get(day:int, test=False):
+    name = f'{day}' + '_test' if test else ''
     return (aoc.data_path / f'{name}.txt').open().read().strip().split('\n')
 
 
-def part1(data) -> int:
-    return ...
+def part1(data, expected = None) -> int:
+
+    answer = ...
+    if expected:
+        assert answer == expected
+    return answer
 
 
-def part2(data) -> int:
-    return ...
+def part2(data, expected = None) -> int:
+
+    answer = ...
+    if expected:
+        assert answer == expected
+    return answer
 
 
 if __name__ == '__main__': 
-    data_test = read_input(f'{day}_test')
-    assert part1(data_test) == ..., part1(data_test)
-    print(part1(read_input(day)))
-    assert part2(data_test) == ..., part2(data_test)
-    print(part2(read_input(day)))
+    data_test, data = get(day, test=True), get(day)
+    
+    part1(data_test, ...)
+    print(part1(data))
+    
+    part2(data_test, ...)
+    print(part2(data))
