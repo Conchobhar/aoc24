@@ -1,8 +1,9 @@
-import argparse
+import time
 import heapq
+import argparse
 from pathlib import Path
-from typing import List, Set, Tuple, Any
-
+from functools import wraps
+from typing import List, Set, Any
 import numpy as np
 
 data_path = Path(__file__).absolute().parents[0] / 'data'
@@ -15,6 +16,34 @@ args = parser.parse_args()
 class Debug:
     """Debug"""
     set = False
+
+
+def aoc_print(s: str, status: bool = None):
+    GREEN_TEXT = "\033[92m"
+    RED_TEXT = "\033[91m"
+    GREY_TEXT = "\033[90m"
+    RESET = "\033[0m"
+    if status is True:
+        color = GREEN_TEXT
+    elif status is False:
+        color = RED_TEXT
+    else:
+        color = GREY_TEXT
+    print(f"{color}{s}{RESET}")
+
+
+def part(func):
+    @wraps(func)
+    def wrapper(*args, expected=...):
+        start = time.time()
+        result = func(*args, expected=expected)
+        end = time.time()
+        aoc_print(f"{func.__name__} took {end - start:.6f} seconds")
+        exp = '...' if expected is ... else repr(expected)
+        status = None if expected is ... else result == expected
+        aoc_print(f"{func.__name__} result: {result}, expected: {exp}", status)
+        return result
+    return wrapper
 
 
 if args.debug:

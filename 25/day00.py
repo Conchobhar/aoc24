@@ -19,6 +19,7 @@ def get(day:int, test=False):
     return (aoc.data_path / f'{name}.txt').open().read().strip().split('\n')
 
 
+@aoc.part
 def part1(data, expected = None) -> int:
 
     answer = ...
@@ -27,6 +28,7 @@ def part1(data, expected = None) -> int:
     return answer
 
 
+@aoc.part
 def part2(data, expected = None) -> int:
 
     answer = ...
@@ -37,9 +39,8 @@ def part2(data, expected = None) -> int:
 
 if __name__ == '__main__': 
     data_test, data = get(day, test=True), get(day)
+    part1(data_test, expected = ...)
+    part1(data)
     
-    part1(data_test, ...)
-    print(part1(data))
-    
-    part2(data_test, ...)
-    print(part2(data))
+    part2(data_test, expected = ...)
+    part2(data)

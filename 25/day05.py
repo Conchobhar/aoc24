@@ -30,12 +30,10 @@ class Ranger:
             ranges = ranges_new
         self.ranges = ranges
 
-    def contains_simple(self, i):
+    def contains_simple(self, id):
         for r in self.ranges:
-            if i in r:
-                aoc.debug(f"{i=} is True")
+            if id in r:
                 return True
-        aoc.debug(f"{i=} is False")
         return False
 
 
@@ -43,20 +41,20 @@ def read_input(name:str):
     rs, ids = (aoc.data_path / f'{name}.txt').open().read().strip().split('\n\n')
     return rs.split('\n'), [int(x) for x in ids.split('\n')]
 
-
-def part1(rs, ids) -> int:
+@aoc.part
+def part1(rs, ids, expected=...) -> int:
     ranger = Ranger(rs)
     return sum(ranger.contains_simple(i) for i in ids)
 
-
-def part2(rs, _) -> int:
+@aoc.part
+def part2(rs, _, expected=...) -> int:
     ranger = Ranger(rs)
     return sum([r.stop-r.start for r in ranger.ranges])
 
 
 if __name__ == '__main__': 
     data_test = read_input(f'{day}_test')
-    assert part1(*data_test) == 3, part1(*data_test)
-    print(part1(*read_input(day)))  # 664
-    assert part2(*data_test) == 14, part2(*data_test)
-    print(part2(*read_input(day)))  # 350780324308385
+    part1(*data_test, expected=3)
+    part1(*read_input(day))  # 664
+    part2(*data_test, expected=14)
+    part2(*read_input(day))  # 350780324308385
