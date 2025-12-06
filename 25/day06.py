@@ -52,14 +52,14 @@ def get(day:int, test=False):
 
 
 @aoc.part
-def part1(data, expected = ...) -> int:
+def part1(data) -> int:
     data = [r.strip().split() for r in data]
     c = Cephalomath1(data)
     return c.solve()
 
 
 @aoc.part
-def part2(data, expected = ...) -> int:
+def part2(data) -> int:
     ncol = len(data[0])
     values, syms = data[0:-1], data[-1]
     p = ncol-1
@@ -80,8 +80,8 @@ def part2(data, expected = ...) -> int:
 
 if __name__ == '__main__': 
     data_test, data = get(day, test=True), get(day)
-    part1(data_test, expected = 4277556)
-    part1(data, expected = 5667835681547) 
+    part1(data_test, 4277556)
+    part1(data, 5667835681547) 
     
-    part2(data_test, expected = 3263827)
-    part2(data, expected=9434900032651)
+    part2(data_test, 3263827)
+    part2(data, 9434900032651)

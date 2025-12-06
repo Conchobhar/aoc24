@@ -34,9 +34,14 @@ def aoc_print(s: str, status: bool = None):
 
 def part(func):
     @wraps(func)
-    def wrapper(*args, expected=...):
+    def wrapper(*args):
+        if len(args) == 1:
+            data = args[0]
+            expected = ...
+        else:
+            data, expected = args
         start = time.time()
-        result = func(*args, expected=expected)
+        result = func(data)
         end = time.time()
         aoc_print(f"{func.__name__} took {end - start:.6f} seconds")
         exp = '...' if expected is ... else repr(expected)
