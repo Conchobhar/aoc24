@@ -15,7 +15,7 @@ day = Path(__file__).stem
 
 
 def get(day:int, test=False):
-    name = f'{day}' + '_test' if test else ''
+    name = f'{day}' + ('_test' if test else '')
     return (aoc.data_path / f'{name}.txt').open().read().strip().split('\n')
 
 
@@ -23,8 +23,6 @@ def get(day:int, test=False):
 def part1(data, expected = None) -> int:
 
     answer = ...
-    if expected:
-        assert answer == expected
     return answer
 
 
@@ -32,8 +30,6 @@ def part1(data, expected = None) -> int:
 def part2(data, expected = None) -> int:
 
     answer = ...
-    if expected:
-        assert answer == expected
     return answer
 
 
