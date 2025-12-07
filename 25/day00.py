@@ -20,14 +20,14 @@ def get(day:int, test=False):
 
 
 @aoc.part
-def part1(data, expected = None) -> int:
+def part1(data) -> int:
 
     answer = ...
     return answer
 
 
 @aoc.part
-def part2(data, expected = None) -> int:
+def part2(data) -> int:
 
     answer = ...
     return answer
@@ -35,8 +35,8 @@ def part2(data, expected = None) -> int:
 
 if __name__ == '__main__': 
     data_test, data = get(day, test=True), get(day)
-    part1(data_test, expected = ...)
+    part1(data_test, ...)
     part1(data)
     
-    part2(data_test, expected = ...)
+    part2(data_test, ...)
     part2(data)

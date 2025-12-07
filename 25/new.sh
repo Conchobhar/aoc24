@@ -11,5 +11,6 @@ if [ -e "day$1.py" ]; then
 fi
 
 cp Day00.py "day$1.py"
+git add "day$1.py"
 touch data/day$1.txt
 touch data/day$1_test.txt
