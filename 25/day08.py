@@ -114,6 +114,7 @@ def part1(data) -> int:
 
 @aoc.part
 def part2(data) -> int:
+    """As part1 except a different return condition"""
     ps = []  # all points
     pd = {}  # point 2 other points 2 dist
     d2pair = []  # ordered dist 2 point tuples
@@ -140,8 +141,6 @@ def part2(data) -> int:
         if len(p1.c.ps) == len(ps):
             return p1.x * p2.x
         cs[p1.c.cid] = p1.c
-    # answer = [len(c.ps) for c in cs.values() if len(c.ps) > 1]
-    # return reduce(operator.mul ,sorted(answer, reverse=True)[:3])
 
 
 if __name__ == '__main__': 
