@@ -85,6 +85,7 @@ class P:
     def __init__(self, x:int, y:int):
         self.x = x
         self.y = y
+        self.label = ''
 
     def __add__(self, other):
         return P(self.x + other.x, self.y + other.y)
