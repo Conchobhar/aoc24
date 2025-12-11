@@ -2,7 +2,7 @@ import time
 import heapq
 import argparse
 from pathlib import Path
-from functools import wraps
+from functools import cached_property, wraps
 from typing import List, Set, Any
 import numpy as np
 
@@ -69,7 +69,8 @@ class P:
     Limits for x and y are class attribs defining the range of the grid the points are used in.
     These are set by the revelent problem.
     """
-
+    fig = None
+    ax = None
     limx = None
     limy = None
 
@@ -86,6 +87,22 @@ class P:
         self.x = x
         self.y = y
         self.label = ''
+
+    @classmethod
+    def init_plot(cls):
+        import matplotlib.pyplot as plt
+        cls.fig, cls.ax = plt.subplots()
+        cls.ax.set_xlim(-1, cls.limx+1)
+        cls.ax.set_ylim(-1, cls.limy+1)
+
+    def plot(self, ax=None, color='red', size=800, alpha=0.5, marker='s', **kwargs):
+        if ax is None:
+            ax = type(self).ax
+            if ax is None:
+                type(self).init_plot()
+                ax = type(self).ax
+        ax.scatter(self.x, self.y, c=color, marker=marker, s=size, alpha=alpha, **kwargs)
+        return ax
 
     def __add__(self, other):
         return P(self.x + other.x, self.y + other.y)
@@ -117,15 +134,17 @@ class P:
     def l1(self, other):
         return abs(self.x-other.x) + abs(self.y-other.y)
     
-    @property
+    @cached_property
     def adjacent_4(self) -> Set['P']:
         """Get all 4 adjacent (but not necessarily in bounds) points to this one."""
         return set(self + d for d in deltas_4)    
     
     @property
     def adjacent_8(self) -> Set['P']:
-        """Get all 4 adjacent (but not necessarily in bounds) points to this one."""
-        return set(self + d for d in deltas_8)
+        """Get all 8 adjacent (but not necessarily in bounds) points to this one."""
+        # Use adjacent_4 and add diagonals
+        diagonals = [P(1, 1), P(1, -1), P(-1, 1), P(-1, -1)]
+        return self.adjacent_4 | set(self + d for d in diagonals)
 
     @property
     def in_bounds(self) -> bool:
