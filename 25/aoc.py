@@ -4,6 +4,7 @@ import argparse
 from pathlib import Path
 from functools import cached_property, wraps
 from typing import List, Set, Any
+from matplotlib import pyplot as plt
 import numpy as np
 
 data_path = Path(__file__).absolute().parents[0] / 'data'
@@ -95,13 +96,15 @@ class P:
         cls.ax.set_xlim(-1, cls.limx+1)
         cls.ax.set_ylim(-1, cls.limy+1)
 
-    def plot(self, ax=None, color='red', size=800, alpha=0.5, marker='s', **kwargs):
+    def plot(self, ax=None, c='red', s=600, alpha=0.4, marker='s', **kwargs):
         if ax is None:
             ax = type(self).ax
             if ax is None:
                 type(self).init_plot()
                 ax = type(self).ax
-        ax.scatter(self.x, self.y, c=color, marker=marker, s=size, alpha=alpha, **kwargs)
+        ax.scatter(self.x, self.y, c=c, marker=marker, s=s, alpha=alpha, **kwargs)
+        plt.draw()
+        plt.pause(0.1)
         return ax
 
     def __add__(self, other):
