@@ -14,7 +14,7 @@ import aoc
 day = Path(__file__).stem
 
 
-def get(day:int, test=False):
+def get(day:str, test=False):
     name = f'{day}' + ('_test' if test else '')
     return (aoc.data_path / f'{name}.txt').open().read().strip().split('\n')
 
